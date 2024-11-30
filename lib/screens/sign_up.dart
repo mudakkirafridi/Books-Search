@@ -21,7 +21,7 @@ class SignUp extends StatelessWidget {
               ),
               Center(
                   child: Image.asset(
-                'assets/images/ALPHA Logo.png',
+                'assets/images/logo.png',
                 height: 139,
                 width: 139,
               )),
