@@ -1,3 +1,4 @@
+import 'package:books_search/screens/detail.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -115,12 +116,21 @@ class _HomeScreenState extends State<HomeScreen> {
                             children: [
                               ClipRRect(
                                   borderRadius: BorderRadius.circular(20),
-                                  child: Image.network(
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.7 /
-                                              2,
-                                      'https://marketplace.canva.com/EAFaQMYuZbo/1/0/1003w/canva-brown-rusty-mystery-novel-book-cover-hG1QhA7BiBU.jpg')),
+                                  child: InkWell(
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (_) =>
+                                                  const DetailScreen()));
+                                    },
+                                    child: Image.network(
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.7 /
+                                                2,
+                                        'https://marketplace.canva.com/EAFaQMYuZbo/1/0/1003w/canva-brown-rusty-mystery-novel-book-cover-hG1QhA7BiBU.jpg'),
+                                  )),
                               const Text(
                                 'Someone Like You',
                                 style: TextStyle(

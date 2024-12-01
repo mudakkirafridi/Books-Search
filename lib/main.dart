@@ -1,5 +1,3 @@
-import 'package:books_search/screens/detail.dart';
-import 'package:books_search/screens/home.dart';
 import 'package:books_search/screens/onboarding.dart';
 import 'package:flutter/material.dart';
 
@@ -20,7 +18,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const DetailScreen(),
+      home: const OnboardingScreen(),
     );
   }
 }
