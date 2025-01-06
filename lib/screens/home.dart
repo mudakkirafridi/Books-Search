@@ -207,7 +207,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         appProvider.healthBook?.books?[index].image.toString()?? ''),
                                   )),
                                Text(
-                                appProvider.healthBook?.books?[index].title ?? '',
+                                appProvider.healthBook?.books?[index].title ?? '',maxLines: 1,
                                 style:const TextStyle(
                                     fontSize: 16, fontWeight: FontWeight.bold),
                               ),

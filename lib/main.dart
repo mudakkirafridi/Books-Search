@@ -1,6 +1,5 @@
 import 'package:books_search/controller/global_controller.dart';
 import 'package:books_search/screens/home.dart';
-import 'package:books_search/screens/onboarding.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
