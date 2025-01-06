@@ -2,7 +2,9 @@ import 'package:books_search/widgets/my_button.dart';
 import 'package:flutter/material.dart';
 
 class DetailScreen extends StatelessWidget {
-  const DetailScreen({super.key});
+  String? image;
+  String? title;
+   DetailScreen({super.key , required this.image , required this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -32,16 +34,16 @@ class DetailScreen extends StatelessWidget {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: Image.network(
-                      'https://marketplace.canva.com/EAFaQMYuZbo/1/0/1003w/canva-brown-rusty-mystery-novel-book-cover-hG1QhA7BiBU.jpg',
+                     image ?? '',
                       height: MediaQuery.of(context).size.height * 0.5,
                     ),
                   ),
                   const SizedBox(
                     height: 10,
                   ),
-                  const Text(
-                    'Someone Like You',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                   Text(
+                    title ?? '',
+                    style:const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                   const Text(
                     'Mudakir Afridi',

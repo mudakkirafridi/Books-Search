@@ -1,5 +1,8 @@
+import 'package:books_search/controller/global_controller.dart';
 import 'package:books_search/screens/detail.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -10,7 +13,14 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   @override
+  void initState() {
+    AppProvider appProvider = Provider.of<AppProvider>(context , listen: false);
+    appProvider.fetchFlutterBookData();
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
+    AppProvider appProvider = Provider.of<AppProvider>(context);
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -94,7 +104,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Novel',
+                    'Flutter',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   Text('Romance'),
@@ -102,14 +112,79 @@ class _HomeScreenState extends State<HomeScreen> {
                   Text('Self-Love')
                 ],
               ),
-              SizedBox(
-                  height: 308,
+              appProvider.isLoading
+                  ? _buildShimmer(context)
+                  : SizedBox(
+                      height: MediaQuery.of(context).size.height * .5,
+                      child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: appProvider.flutterBook?.books?.length,
+                          itemBuilder: (context, index) {
+                            return SizedBox(
+                              width: 180,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  ClipRRect(
+                                      borderRadius: BorderRadius.circular(20),
+                                      child: InkWell(
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (_) =>
+                                                       DetailScreen(image: appProvider.flutterBook?.books?[index].image,title: appProvider.flutterBook?.books?[index].title,)));
+                                        },
+                                        child: Image.network(
+                                          appProvider.flutterBook?.books?[index]
+                                                  .image ??
+                                              'https://via.placeholder.com/150',
+                                          height:
+                                            MediaQuery.of(context).size.height *
+                                                0.7 /
+                                                2,
+                                          errorBuilder:
+                                              (context, error, stackTrace) {
+                                            return const Icon(Icons.broken_image);
+                                          },
+                                        ),
+                                      )),
+                                  Text(
+                                    appProvider.flutterBook?.books?[index].title
+                                            .toString() ??
+                                        'mes',
+                                    style:const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  const Text(
+                                    'Mudakir',
+                                    style: TextStyle(
+                                        fontSize: 14, color: Color(0xff9D9D9D)),
+                                  ),
+                                   Text(
+                                     appProvider.flutterBook?.books?[index].price?? 'Unknown',
+                                    style:const TextStyle(
+                                        fontSize: 12, color: Color(0xff9D9D9D)),
+                                  )
+                                ],
+                              ),
+                            );
+                          })),
+              const Text(
+                'Health',
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              ),
+              // flutter books listview
+             appProvider.isLoading ? _buildShimmer(context) : SizedBox(
+                  height: MediaQuery.of(context).size.height * .5,
                   child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: 9,
                       itemBuilder: (context, index) {
                         return SizedBox(
-                          width: 160,
+                          width: 180,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -122,72 +197,28 @@ class _HomeScreenState extends State<HomeScreen> {
                                           context,
                                           MaterialPageRoute(
                                               builder: (_) =>
-                                                  const DetailScreen()));
+                                                   DetailScreen(image: appProvider.healthBook?.books?[index].image,title: appProvider.healthBook?.books?[index].title,)));
                                     },
                                     child: Image.network(
                                         height:
                                             MediaQuery.of(context).size.height *
                                                 0.7 /
                                                 2,
-                                        'https://marketplace.canva.com/EAFaQMYuZbo/1/0/1003w/canva-brown-rusty-mystery-novel-book-cover-hG1QhA7BiBU.jpg'),
+                                        appProvider.healthBook?.books?[index].image.toString()?? ''),
                                   )),
-                              const Text(
-                                'Someone Like You',
-                                style: TextStyle(
+                               Text(
+                                appProvider.healthBook?.books?[index].title ?? '',
+                                style:const TextStyle(
                                     fontSize: 16, fontWeight: FontWeight.bold),
                               ),
-                              const Text(
-                                'Mudakir',
-                                style: TextStyle(
+                               Text(
+                               appProvider.healthBook?.books?[index].subtitle ?? '',
+                                style:const TextStyle(
                                     fontSize: 14, color: Color(0xff9D9D9D)),
                               ),
-                              const Text(
-                                'p198',
-                                style: TextStyle(
-                                    fontSize: 12, color: Color(0xff9D9D9D)),
-                              )
-                            ],
-                          ),
-                        );
-                      })),
-              const Text(
-                'Flutter',
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-              ),
-              // flutter books listview
-              SizedBox(
-                  height: 308,
-                  child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 9,
-                      itemBuilder: (context, index) {
-                        return SizedBox(
-                          width: 160,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              ClipRRect(
-                                  borderRadius: BorderRadius.circular(20),
-                                  child: Image.network(
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.7 /
-                                              2,
-                                      'https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1497579774i/35083833.jpg')),
-                              const Text(
-                                'Someone Like You',
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
-                              ),
-                              const Text(
-                                'Mudakir',
-                                style: TextStyle(
-                                    fontSize: 14, color: Color(0xff9D9D9D)),
-                              ),
-                              const Text(
-                                'p198',
-                                style: TextStyle(
+                               Text(
+                                appProvider.healthBook?.books?[index].price?? 'Unknown',
+                                style:const TextStyle(
                                     fontSize: 12, color: Color(0xff9D9D9D)),
                               )
                             ],
@@ -201,3 +232,95 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+
+// https://marketplace.canva.com/EAFaQMYuZbo/1/0/1003w/canva-brown-rusty-mystery-novel-book-cover-hG1QhA7BiBU.jpg
+
+Widget _buildShimmer(BuildContext context) {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: [
+          Shimmer.fromColors(
+        baseColor: Colors.grey[300]!,
+        highlightColor: Colors.grey[100]!,
+        child: SizedBox(
+          width: 180,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: Container(
+                  height: MediaQuery.of(context).size.height * 0.7 / 2,
+                  color: Colors.grey,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Container(
+                height: 16,
+                width: 120,
+                color: Colors.grey,
+              ),
+              const SizedBox(height: 8),
+              Container(
+                height: 14,
+                width: 100,
+                color: Colors.grey,
+              ),
+              const SizedBox(height: 8),
+              Container(
+                height: 12,
+                width: 80,
+                color: Colors.grey,
+              ),
+            ],
+          ),
+        ),
+      ),
+      const SizedBox(width: 10,),
+      Shimmer.fromColors(
+        baseColor: Colors.grey[300]!,
+        highlightColor: Colors.grey[100]!,
+        child: SizedBox(
+          width: 180,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: Container(
+                  height: MediaQuery.of(context).size.height * 0.7 / 2,
+                  color: Colors.grey,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Container(
+                height: 16,
+                width: 120,
+                color: Colors.grey,
+              ),
+              const SizedBox(height: 8),
+              Container(
+                height: 14,
+                width: 100,
+                color: Colors.grey,
+              ),
+              const SizedBox(height: 8),
+              Container(
+                height: 12,
+                width: 80,
+                color: Colors.grey,
+              ),
+            ],
+          ),
+        ),
+      )
+        ],
+      ),
+    );
+  }
+
+
+  
